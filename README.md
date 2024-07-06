@@ -1,4 +1,4 @@
-# FreeVPN App Flutter
+<!-- # FreeVPN App Flutter
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![Dart](https://img.shields.io/badge/dart-100%25-brightgreen)
 ![Flutter](https://img.shields.io/badge/Flutter-Cross%20Platform-blue)
@@ -46,6 +46,6 @@ https://youtube.com/playlist?list=PL8kbUJtS6hyal7Uw7wTeYmv7yiNPH5kOq
   
   
 <!--  <b>Note:</b> This Project is Much More Improved (i.e. Contains New Features) & Optimized than Youtube Course Project. -->
-For Feedback or Suggestions Mail Me At rajpurohitharsh2020@gmail.com 🙂
+<!-- For Feedback or Suggestions Mail Me At rajpurohitharsh2020@gmail.com 🙂 --> -->
 
 # safe_vpn
