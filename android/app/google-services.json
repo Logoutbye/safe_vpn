@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "96599769114",
+    "project_id": "safe-vpn-73c5d",
+    "storage_bucket": "safe-vpn-73c5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96599769114:android:818988971a665d8782d1a3",
+        "android_client_info": {
+          "package_name": "com.nightcoders.safevpn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUCLZTYyls6fKAtnStyPW4l-VLgNxRgD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
