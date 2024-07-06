@@ -64,6 +64,7 @@ extension AppTheme on ThemeData {
 class AppColors {
   static var whiteColor = Colors.white;
   static var greyColor = Colors.white12;
+  static var black = Colors.black12;
 
   static var blueColor = Colors.blue;
   static var greenColor = Colors.green;

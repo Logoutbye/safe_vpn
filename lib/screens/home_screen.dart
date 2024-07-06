@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:safe_vpn/widgets/drawer.dart';
 
 import '../controllers/home_controller.dart';
 import '../helpers/ad_helper.dart';
@@ -30,177 +32,138 @@ class HomeScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      //app bar
-      appBar: AppBar(
-        // leading: Icon(CupertinoIcons.home),
-        title: Text('Safe VPN'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                //ad dialog
+        //app bar
+        drawer: MyDrawer(
+          width: double.infinity,
+        ),
+        appBar: AppBar(
+          // leading: Icon(CupertinoIcons.home),
+          title: Text('Safe VPN'),
+          actions: [
+            IconButton(
+                padding: EdgeInsets.only(right: 8),
+                onPressed: () => Get.to(() => NetworkTestScreen()),
+                icon: Icon(
+                  CupertinoIcons.info,
+                  size: 27,
+                )),
+          ],
+        ),
+        bottomNavigationBar: _changeLocation(context),
 
-                if (Config.hideAds) {
-                  Get.changeThemeMode(
-                      Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                  Pref.isDarkMode = !Pref.isDarkMode;
-                  return;
-                }
+        //body
+        body: Stack(
+          children: [
+            // Lottie Animation as background
+            Positioned.fill(
+              child: Lottie.asset(
+                Get.isDarkMode
+                    ? 'assets/lottie/backgrounddark.json'
+                    : 'assets/lottie/background.json',
+                fit: BoxFit.cover,
+              ),
+            ),
+            Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    //vpn button
+                    Obx(() => _vpnButton()),
 
-                Get.dialog(WatchAdDialog(onComplete: () {
-                  //watch ad to gain reward
-                  AdHelper.showRewardedAd(onComplete: () {
-                    Get.changeThemeMode(
-                        Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                    Pref.isDarkMode = !Pref.isDarkMode;
-                  });
-                }));
-              },
-              icon: Icon(
-                Icons.brightness_medium,
-                size: 26,
-              )),
-          IconButton(
-              padding: EdgeInsets.only(right: 8),
-              onPressed: () => Get.to(() => NetworkTestScreen()),
-              icon: Icon(
-                CupertinoIcons.info,
-                size: 27,
-              )),
-        ],
-      ),
-
-      bottomNavigationBar: _changeLocation(context),
-
-      //body
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          //vpn button
-          Obx(() => _vpnButton()),
-        
-          // Obx(
-          //   () => Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       //country flag
-          //       HomeCard(
-          //           title: _controller.vpn.value.countryLong.isEmpty
-          //               ? 'Country'
-          //               : _controller.vpn.value.countryLong,
-          //           subtitle: 'FREE',
-          //           icon: CircleAvatar(
-          //             radius: 30,
-          //             backgroundColor: Colors.blue,
-          //             child: _controller.vpn.value.countryLong.isEmpty
-          //                 ? Icon(Icons.vpn_lock_rounded,
-          //                     size: 30, color: Colors.white)
-          //                 : null,
-          //             backgroundImage: _controller.vpn.value.countryLong.isEmpty
-          //                 ? null
-          //                 : AssetImage(
-          //                     'assets/flags/${_controller.vpn.value.countryShort.toLowerCase()}.png'),
-          //           )),
-        
-          //       //ping time
-          //       HomeCard(
-          //           title: _controller.vpn.value.countryLong.isEmpty
-          //               ? '100 ms'
-          //               : '${_controller.vpn.value.ping} ms',
-          //           subtitle: 'PING',
-          //           icon: CircleAvatar(
-          //             radius: 30,
-          //             backgroundColor: Colors.orange,
-          //             child: Icon(Icons.equalizer_rounded,
-          //                 size: 30, color: Colors.white),
-          //           )),
-          //     ],
-          //   ),
-          // ),
-        
-          StreamBuilder<VpnStatus?>(
-              initialData: VpnStatus(),
-              stream: VpnEngine.vpnStatusSnapshot(),
-              builder: (context, snapshot) => Container(
-                    padding: EdgeInsets.all(8),
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      // gradient: AppColors.gradient,
-                      color: Get.isDarkMode
-                          ? AppColors.greyColor
-                          : AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(19),
-                    ),
-                    child: FittedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                Row(children: [
-                                  Icon(
-                                    Icons.trending_down_rounded,
-                                    color: AppColors.orangehardAccentColor,
-                                    size: 32,
-                                  ),
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  Column(
+                    StreamBuilder<VpnStatus?>(
+                        initialData: VpnStatus(),
+                        stream: VpnEngine.vpnStatusSnapshot(),
+                        builder: (context, snapshot) => Container(
+                              padding: EdgeInsets.all(8),
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                // gradient: AppColors.gradient,
+                                color: Get.isDarkMode
+                                    ? AppColors.greyColor
+                                    : AppColors.whiteColor,
+                                borderRadius: BorderRadius.circular(19),
+                              ),
+                              child: FittedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text(
-                                        '${snapshot.data?.byteIn ?? '0 kbps'}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
+                                      Row(
+                                        children: [
+                                          Row(children: [
+                                            Icon(
+                                              Icons.trending_down_rounded,
+                                              color: AppColors
+                                                  .orangehardAccentColor,
+                                              size: 32,
+                                            ),
+                                            SizedBox(
+                                              width: 12,
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  '${snapshot.data?.byteIn ?? '0 kbps'}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                ),
+                                                Text('Download')
+                                              ],
+                                            )
+                                          ]),
+                                        ],
                                       ),
-                                      Text('Download')
-                                    ],
-                                  )
-                                ]),
-                              ],
-                            ),
-                            Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                height: MediaQuery.of(context).size.height / 20,
-                                width: 0.9,
-                                color: AppColors.orangehardAccentColor),
-                            Row(
-                              children: [
-                                Row(children: [
-                                  Icon(
-                                    Icons.trending_up_rounded,
-                                    color: AppColors.greenColor,
-                                    size: 32,
-                                  ),
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        '${snapshot.data?.byteOut ?? '0 kbps'}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
+                                      Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: 0.9,
+                                          color:
+                                              AppColors.orangehardAccentColor),
+                                      Row(
+                                        children: [
+                                          Row(children: [
+                                            Icon(
+                                              Icons.trending_up_rounded,
+                                              color: AppColors.greenColor,
+                                              size: 32,
+                                            ),
+                                            SizedBox(
+                                              width: 12,
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  '${snapshot.data?.byteOut ?? '0 kbps'}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                ),
+                                                Text('Upload')
+                                              ],
+                                            )
+                                          ]),
+                                        ],
                                       ),
-                                      Text('Upload')
                                     ],
-                                  )
-                                ]),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ))
-        ]),
-      ),
-    );
+                                  ),
+                                ),
+                              ),
+                            ))
+                  ]),
+            ),
+          ],
+        ));
   }
 
   //vpn button
@@ -314,33 +277,30 @@ class HomeScreen extends StatelessWidget {
                         ? Icon(Icons.vpn_lock_rounded,
                             size: 30, color: Colors.white)
                         : null,
-                    backgroundImage: _controller
-                            .vpn.value.countryLong.isEmpty
+                    backgroundImage: _controller.vpn.value.countryLong.isEmpty
                         ? null
                         : AssetImage(
                             'assets/flags/${_controller.vpn.value.countryShort.toLowerCase()}.png'),
                   ),
-                  trailing:   Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor:
-                            Get.isDarkMode ? Colors.white : Colors.black,
-                        child: Icon(Icons.keyboard_arrow_right_rounded,
-                            color: Get.isDarkMode
-                                ? Colors.black
-                                : Colors.white,
-                            size: 26),
-                      ),
-                      Text(_controller.vpn.value.countryLong.isEmpty
-                          ? '100 ms'
-                          : '${_controller.vpn.value.ping} ms')
-                    ],
+                  trailing: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor:
+                              Get.isDarkMode ? Colors.white : Colors.black,
+                          child: Icon(Icons.keyboard_arrow_right_rounded,
+                              color:
+                                  Get.isDarkMode ? Colors.black : Colors.white,
+                              size: 26),
+                        ),
+                        Text(_controller.vpn.value.countryLong.isEmpty
+                            ? '100 ms'
+                            : '${_controller.vpn.value.ping} ms')
+                      ],
+                    ),
                   ),
-                )
-                                ,
                 )),
           ),
         ),
