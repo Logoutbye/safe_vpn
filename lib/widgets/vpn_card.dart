@@ -20,8 +20,9 @@ class VpnCard extends StatelessWidget {
     final controller = Get.find<HomeController>();
 
     return Card(
-        elevation: 5,
-        margin: EdgeInsets.symmetric(vertical: mq.height * .01),
+        // elevation: 5,
+        // margin: EdgeInsets.symmetric(vertical: mq.height * .01),
+        color: Get.isDarkMode ? AppColors.greyColor : AppColors.whiteColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: InkWell(
           onTap: () {
@@ -34,9 +35,9 @@ class VpnCard extends StatelessWidget {
             if (controller.vpnState.value == VpnEngine.vpnConnected) {
               VpnEngine.stopVpn();
               Future.delayed(
-                  Duration(seconds: 2), () => controller.connectToVpn());
+                  Duration(seconds: 2), () => controller.connectToVpn(context));
             } else {
-              controller.connectToVpn();
+              controller.connectToVpn(context);
             }
           },
           borderRadius: BorderRadius.circular(15),
@@ -66,33 +67,35 @@ class VpnCard extends StatelessWidget {
             //subtitle
             subtitle: Row(
               children: [
-                Icon(Icons.speed_rounded, color: Colors.blue, size: 20),
+                Icon(Icons.speed_rounded,
+                    color: AppColors.orangeAccentColor, size: 20),
                 SizedBox(width: 4),
-                Text(_formatBytes(vpn.speed, 1), style: TextStyle(fontSize: 13))
+                Text(formatBytes(vpn.speed, 1), style: TextStyle(fontSize: 13))
               ],
             ),
 
             //trailing
-            trailing: Row(
+            trailing: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Icon(CupertinoIcons.person_3,
+                    color: AppColors.orangeAccentColor),
+                SizedBox(width: 4),
                 Text(vpn.numVpnSessions.toString(),
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).lightText)),
-                SizedBox(width: 4),
-                Icon(CupertinoIcons.person_3, color: Colors.blue),
               ],
             ),
           ),
         ));
   }
+}
 
-  String _formatBytes(int bytes, int decimals) {
-    if (bytes <= 0) return "0 B";
-    const suffixes = ['Bps', "Kbps", "Mbps", "Gbps", "Tbps"];
-    var i = (log(bytes) / log(1024)).floor();
-    return '${(bytes / pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
-  }
+String formatBytes(int bytes, int decimals) {
+  if (bytes <= 0) return "0 B";
+  const suffixes = ['Bps', "Kbps", "Mbps", "Gbps", "Tbps"];
+  var i = (log(bytes) / log(1024)).floor();
+  return '${(bytes / pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
 }

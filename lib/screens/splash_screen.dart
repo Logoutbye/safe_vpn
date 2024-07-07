@@ -35,27 +35,51 @@ class _SplashScreenState extends State<SplashScreen> {
     mq = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          //app logo
-          Positioned(
-              left: mq.width * .3,
-              top: mq.height * .2,
-              width: mq.width * .4,
-              child: Image.asset('assets/images/logo.png')),
-
-          //label
-          Positioned(
-              bottom: mq.height * .15,
-              width: mq.width,
-              child: Text(
-                'MADE IN INDIA WITH ❤️',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).lightText, letterSpacing: 1),
-              ))
-        ],
-      ),
-    );
+        backgroundColor:
+            Get.isDarkMode ? AppColors.blackHalf : AppColors.whiteColor,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(Get.isDarkMode
+                    ? 'assets/images/logo_dark.png'
+                    : 'assets/images/logo.png'),
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Welcome\n',
+                        style: TextStyle(
+                          color: AppColors.orangeAccentColor,
+                          fontSize: 34,
+                          fontFamily: 'Pacifico',
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'To\n',
+                        style: TextStyle(
+                          color: AppColors.orangeAccentColor,
+                          fontSize: 24,
+                          fontFamily: 'Pacifico',
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Safe VPN',
+                        style: TextStyle(
+                          color: AppColors.orangeAccentColor,
+                          fontSize: 34,
+                          fontFamily: 'Pacifico',
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }

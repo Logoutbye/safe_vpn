@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:safe_vpn/helpers/ad_helper.dart';
+import 'package:safe_vpn/helpers/config.dart';
 import 'helpers/pref.dart';
 import 'screens/splash_screen.dart';
 
@@ -18,11 +20,11 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   //initializing remote config
-  // await Config.initConfig();
+  await Config.initConfig();
 
   await Pref.initializeHive();
 
-  // await AdHelper.initAds();
+  await AdHelper.initAds();
 
   //for setting orientation to portrait only
   SystemChrome.setPreferredOrientations(
@@ -64,7 +66,8 @@ extension AppTheme on ThemeData {
 class AppColors {
   static var whiteColor = Colors.white;
   static var greyColor = Colors.white12;
-  static var black = Colors.black12;
+  static var blackHalf = Colors.black12;
+  static var black = Colors.black;
 
   static var blueColor = Colors.blue;
   static var greenColor = Colors.green;

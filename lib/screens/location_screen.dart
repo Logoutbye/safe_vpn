@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -26,7 +25,7 @@ class LocationScreen extends StatelessWidget {
       () => Scaffold(
         //app bar
         appBar: AppBar(
-          title: Text('VPN Locations (${_controller.vpnList.length})'),
+          title: Text('VPN Servers (${_controller.vpnList.length})'),
         ),
 
         bottomNavigationBar:
@@ -40,9 +39,20 @@ class LocationScreen extends StatelessWidget {
         //refresh button
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 10, right: 10),
-          child: FloatingActionButton(
-              onPressed: () => _controller.getVpnData(),
-              child: Icon(CupertinoIcons.refresh)),
+          child: FloatingActionButton.extended(
+            backgroundColor: Get.isDarkMode ? Colors.white54 : Colors.black54,
+            onPressed: () => _controller.getVpnData(),
+            icon: Icon(
+              Icons.refresh,
+              color: AppColors.whiteColor,
+            ),
+            label: Text(
+              'Re-Fresh',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
 
         body: _controller.isLoading.value
@@ -58,8 +68,8 @@ class LocationScreen extends StatelessWidget {
       itemCount: _controller.vpnList.length,
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.only(
-          top: mq.height * .015,
-          bottom: mq.height * .1,
+          // top: mq.height * .015,
+          // bottom: mq.height * .1,
           left: mq.width * .04,
           right: mq.width * .04),
       itemBuilder: (ctx, i) => VpnCard(vpn: _controller.vpnList[i]));
@@ -72,15 +82,29 @@ class LocationScreen extends StatelessWidget {
           children: [
             //lottie animation
             LottieBuilder.asset('assets/lottie/loading.json',
-                width: mq.width * .7),
-
+                width: mq.width * .4),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                'This may take a while for first time only',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Get.isDarkMode ? Colors.white54 : Colors.black54,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
             //text
-            Text(
-              'Loading VPNs... 😌',
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                'Please wait a moment while we fetch the best available VPN servers for you.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Get.isDarkMode ? Colors.white54 : Colors.black54,
+                    fontWeight: FontWeight.bold),
+              ),
             )
           ],
         ),

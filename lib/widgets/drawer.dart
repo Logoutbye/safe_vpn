@@ -89,11 +89,10 @@ class MyDrawer extends StatelessWidget {
 
                 Get.dialog(WatchAdDialog(onComplete: () {
                   //watch ad to gain reward
-                  AdHelper.showRewardedAd(onComplete: () {
-                    Get.changeThemeMode(
-                        Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                    Pref.isDarkMode = !Pref.isDarkMode;
-                  });
+                  AdHelper.precacheInterstitialAd();
+                  Get.changeThemeMode(
+                      Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                  Pref.isDarkMode = !Pref.isDarkMode;
                 }));
               },
               child: Container(
@@ -104,7 +103,7 @@ class MyDrawer extends StatelessWidget {
                     border: Border.all(
                         color: Get.isDarkMode
                             ? AppColors.whiteColor
-                            : AppColors.black)),
+                            : AppColors.blackHalf)),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -143,7 +142,7 @@ class MyDrawer extends StatelessWidget {
                     border: Border.all(
                         color: Get.isDarkMode
                             ? AppColors.whiteColor
-                            : AppColors.black)),
+                            : AppColors.blackHalf)),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -183,7 +182,7 @@ class MyDrawer extends StatelessWidget {
                     border: Border.all(
                         color: Get.isDarkMode
                             ? AppColors.whiteColor
-                            : AppColors.black)),
+                            : AppColors.blackHalf)),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -223,7 +222,7 @@ class MyDrawer extends StatelessWidget {
                     border: Border.all(
                         color: Get.isDarkMode
                             ? AppColors.whiteColor
-                            : AppColors.black)),
+                            : AppColors.blackHalf)),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -262,7 +261,7 @@ class MyDrawer extends StatelessWidget {
                     border: Border.all(
                         color: Get.isDarkMode
                             ? AppColors.whiteColor
-                            : AppColors.black)),
+                            : AppColors.blackHalf)),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safe_vpn/main.dart';
+import 'package:safe_vpn/screens/location_screen.dart';
 
 import '../helpers/ad_helper.dart';
-import '../helpers/my_dialogs.dart';
 import '../helpers/pref.dart';
 import '../models/vpn.dart';
 import '../models/vpn_config.dart';
@@ -16,10 +17,13 @@ class HomeController extends GetxController {
 
   final vpnState = VpnEngine.vpnDisconnected.obs;
 
-  void connectToVpn() async {
+  void connectToVpn(BuildContext context) async {
     if (vpn.value.openVPNConfigDataBase64.isEmpty) {
-      MyDialogs.info(msg: 'Select a Location by clicking \'Change Location\'');
-      return;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LocationScreen(),
+          ));
     }
 
     if (vpnState.value == VpnEngine.vpnDisconnected) {

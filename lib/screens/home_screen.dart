@@ -68,98 +68,101 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //vpn button
-                    Obx(() => _vpnButton()),
-
-                    StreamBuilder<VpnStatus?>(
-                        initialData: VpnStatus(),
-                        stream: VpnEngine.vpnStatusSnapshot(),
-                        builder: (context, snapshot) => Container(
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                // gradient: AppColors.gradient,
-                                color: Get.isDarkMode
-                                    ? AppColors.greyColor
-                                    : AppColors.whiteColor,
-                                borderRadius: BorderRadius.circular(19),
-                              ),
-                              child: FittedBox(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Row(children: [
-                                            Icon(
-                                              Icons.trending_down_rounded,
-                                              color: AppColors
-                                                  .orangehardAccentColor,
-                                              size: 32,
-                                            ),
-                                            SizedBox(
-                                              width: 12,
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  '${snapshot.data?.byteIn ?? '0 kbps'}',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                ),
-                                                Text('Download')
-                                              ],
-                                            )
-                                          ]),
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: 0.9,
-                                          color:
-                                              AppColors.orangehardAccentColor),
-                                      Row(
-                                        children: [
-                                          Row(children: [
-                                            Icon(
-                                              Icons.trending_up_rounded,
-                                              color: AppColors.greenColor,
-                                              size: 32,
-                                            ),
-                                            SizedBox(
-                                              width: 12,
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  '${snapshot.data?.byteOut ?? '0 kbps'}',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                ),
-                                                Text('Upload')
-                                              ],
-                                            )
-                                          ]),
-                                        ],
-                                      ),
-                                    ],
+                    Obx(() => _vpnButton(context)),
+                    Obx(() => _controller.vpnState.value ==
+                            VpnEngine.vpnConnected
+                        ? StreamBuilder<VpnStatus?>(
+                            initialData: VpnStatus(),
+                            stream: VpnEngine.vpnStatusSnapshot(),
+                            builder: (context, snapshot) => Container(
+                                  padding: EdgeInsets.all(8),
+                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    // gradient: AppColors.gradient,
+                                    color: Get.isDarkMode
+                                        ? AppColors.greyColor
+                                        : AppColors.whiteColor,
+                                    borderRadius: BorderRadius.circular(19),
                                   ),
-                                ),
-                              ),
-                            ))
+                                  child: FittedBox(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Row(children: [
+                                                Icon(
+                                                  Icons.trending_down_rounded,
+                                                  color: AppColors
+                                                      .orangehardAccentColor,
+                                                  size: 32,
+                                                ),
+                                                SizedBox(
+                                                  width: 12,
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      '${snapshot.data?.byteIn ?? '0 kbps'}',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    Text('Download')
+                                                  ],
+                                                )
+                                              ]),
+                                            ],
+                                          ),
+                                          Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  20,
+                                              width: 0.9,
+                                              color: AppColors
+                                                  .orangehardAccentColor),
+                                          Row(
+                                            children: [
+                                              Row(children: [
+                                                Icon(
+                                                  Icons.trending_up_rounded,
+                                                  color: AppColors.greenColor,
+                                                  size: 32,
+                                                ),
+                                                SizedBox(
+                                                  width: 12,
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      '${snapshot.data?.byteOut ?? '0 kbps'}',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    Text('Upload')
+                                                  ],
+                                                )
+                                              ]),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                        : SizedBox()),
                   ]),
             ),
           ],
@@ -167,7 +170,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   //vpn button
-  Widget _vpnButton() => Column(
+  Widget _vpnButton(BuildContext context) => Column(
         children: [
           //count down timer
           Obx(() => Column(
@@ -185,7 +188,7 @@ class HomeScreen extends StatelessWidget {
             button: true,
             child: InkWell(
               onTap: () {
-                _controller.connectToVpn();
+                _controller.connectToVpn(context);
               },
               borderRadius: BorderRadius.circular(100),
               child: Container(
@@ -241,12 +244,17 @@ class HomeScreen extends StatelessWidget {
                 EdgeInsets.only(top: mq.height * .015, bottom: mq.height * .02),
             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
             decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(15)),
+                color:
+                    Get.isDarkMode ? AppColors.greyColor : AppColors.whiteColor,
+                borderRadius: BorderRadius.circular(15)),
             child: Text(
               _controller.vpnState.value == VpnEngine.vpnDisconnected
                   ? 'Not Connected'
                   : _controller.vpnState.replaceAll('_', ' ').toUpperCase(),
-              style: TextStyle(fontSize: 12.5, color: Colors.white),
+              style: TextStyle(
+                fontSize: 12.5,
+                color: Get.isDarkMode ? AppColors.whiteColor : AppColors.black,
+              ),
             ),
           ),
         ],
